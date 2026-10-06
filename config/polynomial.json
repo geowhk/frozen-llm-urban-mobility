@@ -1,0 +1,40 @@
+{
+  "model": "coordinate_time_poly2_ridge",
+  "label": "Coordinate–time polynomial ridge",
+  "alphas": [
+    1e-06,
+    1e-05,
+    0.0001,
+    0.001,
+    0.01,
+    0.1,
+    1.0,
+    10.0,
+    100.0,
+    1000.0,
+    10000.0,
+    100000.0,
+    1000000.0
+  ],
+  "solver": "svd",
+  "fit_intercept": false,
+  "degree": 2,
+  "include_bias": false,
+  "base_features": [
+    "orig_lat",
+    "orig_lon",
+    "dest_lat",
+    "dest_lon",
+    "sin_hour",
+    "cos_hour"
+  ],
+  "coordinate_decimals": 3,
+  "feature_scaling": "training mean and population SD at each of two stages",
+  "target": "log1p, training mean centered only",
+  "selection": "minimum inner validation log MSE; exact tie larger alpha",
+  "inverse": "maximum(0, expm1)",
+  "smape_epsilon": 1e-09,
+  "smape_percent": false,
+  "existing_predictions": "audited 20260914; unchanged",
+  "new_llm_run": false
+}

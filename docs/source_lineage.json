@@ -1,0 +1,74 @@
+[
+  {
+    "source": "07_analysis/paper1_core.py",
+    "source_sha256": "2bb5ea3a35464064ee1163bc6f5922198f01ba90e1aee723e6dce45d51a9956d",
+    "target": "src/paper1/core.py",
+    "changes": "Byte-identical source copy"
+  },
+  {
+    "source": "07_analysis/strict_dyad_core.py",
+    "source_sha256": "7cdac6274fcd7f3adacfc7a4ffcb3d43573e84896dba9e2854cf24ba97bc1b12",
+    "target": "src/paper1/splits.py",
+    "changes": "Relative imports and formatting only"
+  },
+  {
+    "source": "07_analysis/preprocess_flow.R",
+    "source_sha256": "4be502da7e16a062f8f93a4b034adba6c2c05237ef80324de8f998647393f20c",
+    "target": "scripts/01_preprocess_flow.R",
+    "changes": "Byte-identical source copy"
+  },
+  {
+    "source": "07_analysis/representation_snapshot/src/mobility_llm/prompts.py",
+    "source_sha256": "5fe0acb43137bcb94626a076cc6e75a262ca9f955426d78c9877bddeb1f6d068",
+    "target": "src/paper1/representation/prompts.py",
+    "changes": "Relative imports and formatting only"
+  },
+  {
+    "source": "07_analysis/representation_snapshot/src/mobility_llm/repr.py",
+    "source_sha256": "00acbda5486bf78083f82e4193dd8828056d5e75c807dbd851a416591feae62c",
+    "target": "src/paper1/representation/repr.py",
+    "changes": "Relative imports and formatting only"
+  },
+  {
+    "source": "07_analysis/representation_snapshot/src/mobility_llm/forward_cache.py",
+    "source_sha256": "bd81a792e8e0a6db4f8fa0fc8504e6b6a8284e8a9a6797356d00116ce2b122dd",
+    "target": "src/paper1/representation/forward_cache.py",
+    "changes": "Relative imports and formatting only"
+  },
+  {
+    "source": "08_results/benchmark_poly2_update_20260928_v2/code/legacy_diagnostics.py",
+    "source_sha256": "d31cd15d6bd5fcbdba71730902f798939d151747a518ee0be6f70bb2fb3b06f5",
+    "target": "src/paper1/diagnostics.py",
+    "changes": "Selected validation, metric and district functions; explicit models parameter"
+  },
+  {
+    "source": "08_results/benchmark_poly2_update_20260928_v2/code/run_analysis.py",
+    "source_sha256": "98631536fad37f3499256bf8376947a672ea61a8a7eb4dbe3e0fee2834d54c66",
+    "target": "src/paper1/config.py",
+    "changes": "Shared labels only"
+  },
+  {
+    "source": "08_results/benchmark_poly2_update_20260928_v2/code/run_analysis.py",
+    "source_sha256": "98631536fad37f3499256bf8376947a672ea61a8a7eb4dbe3e0fee2834d54c66",
+    "target": "src/paper1/polynomial.py",
+    "changes": "Extracted fitting stage; explicit root and local validation log; no arithmetic changes"
+  },
+  {
+    "source": "08_results/benchmark_poly2_update_20260928_v2/code/run_analysis.py",
+    "source_sha256": "98631536fad37f3499256bf8376947a672ea61a8a7eb4dbe3e0fee2834d54c66",
+    "target": "src/paper1/evaluation.py",
+    "changes": "Extracted existing evaluation block; explicit root and local log; no metric changes"
+  },
+  {
+    "source": "08_results/benchmark_poly2_update_20260928_v2/code/build_figures_tables.py",
+    "source_sha256": "765b21c14729128de9a63623fddd67729b3608fef3ec1c1760bad5662b7f28a1",
+    "target": "src/paper1/figures.py",
+    "changes": "Explicit paths; one final S3 renderer; no data or visual changes; Arial path configurable"
+  },
+  {
+    "source": "07_analysis/run_numerical_audit.py",
+    "source_sha256": "9a0a9c7796b3b11def8d95d0feeee2926a9f0a9710b35edc1d23e5e1e95698a9",
+    "target": "src/paper1/audited_models.py",
+    "changes": "Path/CLI/import changes only; audited LSQR solver unchanged"
+  }
+]
