@@ -2,7 +2,7 @@
 
 ## October 2026 release preparation
 
-The launcher was renamed to `run_paper1.py` to remove package shadowing. Figure 2
+The launcher was renamed to `run_urban_mobility.py` to remove package shadowing. Figure 2
 now labels arrival hour as t, matching the TGIS manuscript. No fitting or metric
 arithmetic was changed. The R geometry comment explicitly distinguishes current
 distance geometry from historical prompt coordinates.
@@ -21,7 +21,7 @@ Nine synthetic/original unit tests passed. The accepted snapshot passed 228 read
 
 ## Required private bundle
 
-The accepted package must contain `config.json`, `inputs/` (mobility, prompt source, saved outer/inner splits, audited OOF, district names, bins and prior diagnostics), and `results/oof_predictions_all_models.parquet`. Its `CHECKSUMS.sha256` is verified when present. Predictions use 14,400 directed OD-hour rows, 300 reciprocal dyads, five saved outer folds. `y_gt` is a historical column name for mobility estimates, not a claim of error-free ground truth. Model/column names are centralized in `src/paper1/config.py`.
+The accepted package must contain `config.json`, `inputs/` (mobility, prompt source, saved outer/inner splits, audited OOF, district names, bins and prior diagnostics), and `results/oof_predictions_all_models.parquet`. Its `CHECKSUMS.sha256` is verified when present. Predictions use 14,400 directed OD-hour rows, 300 reciprocal dyads, five saved outer folds. `y_gt` is a historical column name for mobility estimates, not a claim of error-free ground truth. Model/column names are centralized in `src/urban_mobility/config.py`.
 
 For the original-model audit, private data additionally requires `processed/gt_flow_gu_202411_weekday_daily.parquet` and `analysis_cache/{original,geometry}/`. `--archived-final` supplies the original saved splits/candidates/results used by the audit. Do not substitute other folds or recompute coordinates when reusing cached representations. The cache's historical prompt coordinates and new distance geometry have distinct provenance.
 

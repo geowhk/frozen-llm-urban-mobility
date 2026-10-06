@@ -2,7 +2,7 @@ from __future__ import annotations
 import unittest
 import numpy as np
 import pandas as pd
-from paper1.core import (
+from urban_mobility.core import (
     choose_alpha,
     fit_corrected_gravity,
     fit_corrected_marginals,
@@ -15,7 +15,7 @@ from paper1.core import (
 )
 
 
-class Paper1CoreChecks(unittest.TestCase):
+class UrbanMobilityCoreChecks(unittest.TestCase):
 
     def setUp(self) -> None:
         pairs = [(f"o{i}", f"d{j}") for i in range(5) for j in range(5) if i != j]

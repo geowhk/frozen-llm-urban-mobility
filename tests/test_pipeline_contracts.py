@@ -4,10 +4,10 @@ import unittest
 import tempfile
 from pathlib import Path
 import numpy as np
-from paper1.polynomial import transform_fit, transform, fit
-from paper1.diagnostics import total_variation, metrics
-from paper1.config import MODELS, NEW
-from paper1.cli import stage_inputs
+from urban_mobility.polynomial import transform_fit, transform, fit
+from urban_mobility.diagnostics import total_variation, metrics
+from urban_mobility.config import MODELS, NEW
+from urban_mobility.cli import stage_inputs
 
 
 class PipelineContracts(unittest.TestCase):

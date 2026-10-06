@@ -65,7 +65,7 @@ ATOL = 1e-08
 
 
 def parse_args() -> argparse.Namespace:
-    parser = argparse.ArgumentParser(description="Paper 1 최소 수치 감사")
+    parser = argparse.ArgumentParser(description="Urban mobility 최소 수치 감사")
     parser.add_argument("--data-root", type=Path, required=True)
     parser.add_argument("--archived-final", type=Path, required=True)
     parser.add_argument("--output", type=Path, required=True)
@@ -290,7 +290,7 @@ def fit_condition_fold(
         features, inner_train_mask, validation_mask, target
     )
     common_base = {
-        "run_id": "paper1_numerical_audit_v1",
+        "run_id": "urban_mobility_numerical_audit_v1",
         "condition": condition,
         "outer_fold": fold,
         "n_features": train_z.shape[1],
@@ -367,7 +367,7 @@ def fit_condition_fold(
     outer_intercept = float(outer_y_log.mean())
     outer_centered = outer_y_log - outer_intercept
     outer_common = {
-        "run_id": "paper1_numerical_audit_v1",
+        "run_id": "urban_mobility_numerical_audit_v1",
         "condition": condition,
         "outer_fold": fold,
         "stage": "outer_final",
@@ -408,14 +408,14 @@ def fit_condition_fold(
     ].copy()
     prediction_frame["y_hat"] = prediction
     prediction_frame["y_hat_log_raw"] = prediction_log
-    prediction_frame["source_run_id"] = "paper1_numerical_audit_v1"
+    prediction_frame["source_run_id"] = "urban_mobility_numerical_audit_v1"
     prediction_frame["prediction_version"] = "audited_final"
     solver_prediction_frame = data.loc[
         test_mask, ["query_id", "orig", "dest", "dyad_id", "hour", "outer_fold", "y_gt", "dist_km"]
     ].copy()
     solver_prediction_frame["y_hat"] = original_prediction
     solver_prediction_frame["y_hat_log_raw"] = original_prediction_log
-    solver_prediction_frame["source_run_id"] = "paper1_numerical_audit_v1"
+    solver_prediction_frame["source_run_id"] = "urban_mobility_numerical_audit_v1"
     solver_prediction_frame["prediction_version"] = "solver_verified_original_grid"
     original_losses = sorted(original_rows, key=lambda row: float(row["alpha"]))
     old_alpha = float(
@@ -564,7 +564,7 @@ def write_reports(
     (output / "manuscript_impact.md").write_text(impact, encoding="utf-8")
     tables = f"# 집필용 최종 표\n\n## 전체 OOF 성능\n\n{markdown_table(overall[['condition', *ALL_METRICS]], 6)}\n\n## 전체 총량 편향\n\n{markdown_table(bias[['condition', 'reference_total', 'predicted_total', 'signed_total_bias', 'total_bias_pct', 'total_ratio']], 6)}\n\n## fold별 셀 지표\n\nsMAPE는 퍼센트가 아니라 비율이다. 다섯 fold는 독립 반복실험이나 신뢰구간으로 해석하지 않는다.\n\n{markdown_table(by_fold, 6)}\n\n## 감사 후 alpha 선택\n\n{markdown_table(selection[['condition', 'outer_fold', 'audited_selected_alpha', 'validation_log_mse', 'selected_at_lower_boundary', 'selected_at_upper_boundary']], 6)}\n"
     (output / "tables_for_manuscript.md").write_text(tables, encoding="utf-8")
-    report = f"# Paper 1 최소 수치 감사 보고서\n\n## Material Passport\n\n- Material ID: `paper1_numerical_audit_v1`\n- Verification Status: `VERIFIED`\n- Source result: `strict_dyad_corrected_20260913T103227Z/final`\n- Scope: LSQR 진단, categorical alpha 사전지정 확장, 전체 총량 편향, fold별 셀 지표\n- Out of scope: 새 표현 추출, 새 기준모형, bootstrap, repeated CV, smearing, 추가 도시·기간·LLM·prompt\n\n## 완료 상태\n\n- 기존 candidate loss 재현 행: {int((reproduction['entity'] == 'candidate_losses').sum())}개 condition-fold\n- 실행된 LSQR 적합: {len(diagnostics)}회(엄격 재확인 포함)\n- 1차 진단 경고: {len(warnings)}회\n- alpha 선택 변화: {len(changed)}개 condition-fold\n- 원고 세 자리 수치 변화: {len(rounded_changes)}개 condition-metric\n\n## 수렴 판정\n\n종료코드, 반복 수, 잔차, 조건수, 직접 계산한 목적함수와 stationarity를 `solver_diagnostics.csv`에 기록했다. 3/6/7 종료, 비유한 계수 또는 stationarity_rel > 1e-8은 사전 규칙에 따라 엄격 재확인했다. 미해결 적합이 있으면 실행은 완료되지 않도록 구성했다.\n\n## categorical 경계 판정\n\n사전 지정된 `[0.0001, 0.001, 0.01, 0.1, 1, 10, 100, 1000, 10000, 100000]`만 평가했다. 최종 경계 여부는 `readout_selection_audited.csv`에 기록했다. outer 성능은 alpha 선택에 사용하지 않았다.\n\n## 해석 범위\n\n전체 총량 편향은 연구에 포함한 서울 자치구 간 평균 평일 OD-hour 프로필에 관한 값이다. 월간 전체 이동이나 고유 이용자 수가 아니다. fold별 지표는 분할별 기술값이며 추론통계가 아니다.\n"
+    report = f"# Urban mobility 최소 수치 감사 보고서\n\n## Material Passport\n\n- Material ID: `urban_mobility_numerical_audit_v1`\n- Verification Status: `VERIFIED`\n- Source result: `strict_dyad_corrected_20260913T103227Z/final`\n- Scope: LSQR 진단, categorical alpha 사전지정 확장, 전체 총량 편향, fold별 셀 지표\n- Out of scope: 새 표현 추출, 새 기준모형, bootstrap, repeated CV, smearing, 추가 도시·기간·LLM·prompt\n\n## 완료 상태\n\n- 기존 candidate loss 재현 행: {int((reproduction['entity'] == 'candidate_losses').sum())}개 condition-fold\n- 실행된 LSQR 적합: {len(diagnostics)}회(엄격 재확인 포함)\n- 1차 진단 경고: {len(warnings)}회\n- alpha 선택 변화: {len(changed)}개 condition-fold\n- 원고 세 자리 수치 변화: {len(rounded_changes)}개 condition-metric\n\n## 수렴 판정\n\n종료코드, 반복 수, 잔차, 조건수, 직접 계산한 목적함수와 stationarity를 `solver_diagnostics.csv`에 기록했다. 3/6/7 종료, 비유한 계수 또는 stationarity_rel > 1e-8은 사전 규칙에 따라 엄격 재확인했다. 미해결 적합이 있으면 실행은 완료되지 않도록 구성했다.\n\n## categorical 경계 판정\n\n사전 지정된 `[0.0001, 0.001, 0.01, 0.1, 1, 10, 100, 1000, 10000, 100000]`만 평가했다. 최종 경계 여부는 `readout_selection_audited.csv`에 기록했다. outer 성능은 alpha 선택에 사용하지 않았다.\n\n## 해석 범위\n\n전체 총량 편향은 연구에 포함한 서울 자치구 간 평균 평일 OD-hour 프로필에 관한 값이다. 월간 전체 이동이나 고유 이용자 수가 아니다. fold별 지표는 분할별 기술값이며 추론통계가 아니다.\n"
     (output / "AUDIT_REPORT.md").write_text(report, encoding="utf-8")
 
 
@@ -613,7 +613,7 @@ def main() -> None:
                 sha256_file(cache / filename) == expected, f"cache SHA mismatch: {label}/{filename}"
             )
     config = {
-        "spec_version": "paper1_numerical_audit_v1",
+        "spec_version": "urban_mobility_numerical_audit_v1",
         "created_utc": started,
         "original_grid": ORIGINAL_GRID,
         "categorical_extended_grid": CATEGORICAL_GRID,
@@ -855,7 +855,7 @@ def main() -> None:
         diagnostics_frame,
         reproduction_frame,
     )
-    readme = f"# Paper 1 최소 수치 감사 산출물\n\n## 실행 환경과 입력\n\n- 시작: {started}\n- 완료: {utc_now()}\n- 원본 결과: `{archived}`\n- 확정 목표자료: `{gt_path}`\n- 원본 결과는 수정하거나 덮어쓰지 않았다.\n\n## 실행 명령\n\n```bash\nOPENBLAS_NUM_THREADS=1 OMP_NUM_THREADS=1 MKL_NUM_THREADS=1 VECLIB_MAXIMUM_THREADS=1 NUMEXPR_NUM_THREADS=1 \\\npython3 {script_path} \\\n  --paper-root {paper_root} \\\n  --archived-final {archived} \\\n  --output {output}\n```\n\n## 읽는 순서\n\n1. `AUDIT_REPORT.md`\n2. `manuscript_impact.md`\n3. `tables_for_manuscript.md`\n4. `metrics_overall_audited.csv`, `total_flow_bias_audited.csv`, `metrics_by_fold_cell_audited.csv`\n5. `solver_diagnostics.csv`, `numerical_reproduction.csv`, `comparison_to_archived.csv`\n\n## 범위\n\n명세에 적힌 LSQR 진단, categorical alpha 확장, 기존 OOF 총량 편향, fold별 셀 지표만 수행했다. LLM 표현 재추출과 명세 밖 분석은 수행하지 않았다.\n"
+    readme = f"# Urban mobility 최소 수치 감사 산출물\n\n## 실행 환경과 입력\n\n- 시작: {started}\n- 완료: {utc_now()}\n- 원본 결과: `{archived}`\n- 확정 목표자료: `{gt_path}`\n- 원본 결과는 수정하거나 덮어쓰지 않았다.\n\n## 실행 명령\n\n```bash\nOPENBLAS_NUM_THREADS=1 OMP_NUM_THREADS=1 MKL_NUM_THREADS=1 VECLIB_MAXIMUM_THREADS=1 NUMEXPR_NUM_THREADS=1 \\\npython3 {script_path} \\\n  --paper-root {paper_root} \\\n  --archived-final {archived} \\\n  --output {output}\n```\n\n## 읽는 순서\n\n1. `AUDIT_REPORT.md`\n2. `manuscript_impact.md`\n3. `tables_for_manuscript.md`\n4. `metrics_overall_audited.csv`, `total_flow_bias_audited.csv`, `metrics_by_fold_cell_audited.csv`\n5. `solver_diagnostics.csv`, `numerical_reproduction.csv`, `comparison_to_archived.csv`\n\n## 범위\n\n명세에 적힌 LSQR 진단, categorical alpha 확장, 기존 OOF 총량 편향, fold별 셀 지표만 수행했다. LLM 표현 재추출과 명세 밖 분석은 수행하지 않았다.\n"
     (output / "README.md").write_text(readme, encoding="utf-8")
     checksum_rows = []
     for path in sorted(output.rglob("*")):

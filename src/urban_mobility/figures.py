@@ -94,7 +94,7 @@ def workflow(root):
     from matplotlib import font_manager
     import os
 
-    font_path = os.environ.get("PAPER1_ARIAL_FONT", "")
+    font_path = os.environ.get("URBAN_MOBILITY_ARIAL_FONT", "")
     if Path(font_path).is_file():
         font_manager.fontManager.addfont(font_path)
     font_manager.findfont("Arial", fallback_to_default=False)

@@ -1,4 +1,4 @@
-# Paper 1: reproducible analysis code
+# Urban mobility: reproducible analysis code
 
 This is the active code tree. Historical scripts are retained separately, not used as competing entry points. No data, model weights, embeddings, manuscripts, or credentials are included here.
 
@@ -7,12 +7,12 @@ This is the active code tree. Historical scripts are retained separately, not us
 | Stage | Implementation | Purpose |
 |---|---|---|
 | 1. Mobility preprocessing | `scripts/01_preprocess_flow.R` | Weekday daily-average OD-hour mobility estimates; district geometry |
-| 2. Frozen representations | `src/paper1/representation/` | Preserved prompt/representation/cache primitives; see limitations below |
-| 3. Evaluation design | `src/paper1/splits.py` | Reciprocal-dyad outer/inner splits |
-| 4. Audited original models | `src/paper1/audited_models.py`, `core.py` | Final numerical-audit solver and six original conditions |
-| 5. Direct-input comparator | `src/paper1/polynomial.py` | Coordinate–time degree-2 ridge; six inputs, 27 expanded features |
-| 6. Fixed-prediction evaluation | `src/paper1/evaluation.py`, `diagnostics.py` | Overall, fold, flow, distance and district summaries |
-| 7. Publication outputs | `src/paper1/figures.py` | Tables and Figures 2–4/S1–S3 |
+| 2. Frozen representations | `src/urban_mobility/representation/` | Preserved prompt/representation/cache primitives; see limitations below |
+| 3. Evaluation design | `src/urban_mobility/splits.py` | Reciprocal-dyad outer/inner splits |
+| 4. Audited original models | `src/urban_mobility/audited_models.py`, `core.py` | Final numerical-audit solver and six original conditions |
+| 5. Direct-input comparator | `src/urban_mobility/polynomial.py` | Coordinate–time degree-2 ridge; six inputs, 27 expanded features |
+| 6. Fixed-prediction evaluation | `src/urban_mobility/evaluation.py`, `diagnostics.py` | Overall, fold, flow, distance and district summaries |
+| 7. Publication outputs | `src/urban_mobility/figures.py` | Tables and Figures 2–4/S1–S3 |
 | Checks | `validation.py`, `tests/` | Stored hashes, fixed predictions, numeric equivalence and synthetic contracts |
 
 ## Install and run
@@ -23,18 +23,18 @@ Use Python 3.12 or later and a separate virtual environment. Release preparation
 python -m venv .venv
 source .venv/bin/activate
 python -m pip install -r requirements.txt
-python run_paper1.py verify --package /path/to/accepted_20260928
-python run_paper1.py reproduce --package /path/to/accepted_20260928 --output /path/to/NEW_run
+python run_urban_mobility.py verify --package /path/to/reference_artifacts
+python run_urban_mobility.py reproduce --package /path/to/reference_artifacts --output /path/to/NEW_run
 PYTHONPATH=src python -m unittest discover -s tests -v
 ```
 
-`verify` is read-only. `evaluate` recalculates summaries; `figures` exports figures/tables; `reproduce` does both. These commands reuse stored OOF predictions and do not fit models. Output directories must not already exist. Figures require Arial installed locally (or `PAPER1_ARIAL_FONT` set to an existing Arial font file); no font file is distributed.
+`verify` is read-only. `evaluate` recalculates summaries; `figures` exports figures/tables; `reproduce` does both. These commands reuse stored OOF predictions and do not fit models. Output directories must not already exist. Figures require Arial installed locally (or `URBAN_MOBILITY_ARIAL_FONT` set to an existing Arial font file); no font file is distributed.
 
 Training is deliberately separate and opt-in:
 
 ```sh
-python run_paper1.py fit-poly2 --package /path/to/accepted_20260928 --output /path/to/NEW_poly2_fit
-PYTHONPATH=src python -m paper1.audited_models --data-root /path/to/private_data --archived-final /path/to/prior_strict_final --output /path/to/NEW_audit
+python run_urban_mobility.py fit-poly2 --package /path/to/reference_artifacts --output /path/to/NEW_poly2_fit
+PYTHONPATH=src python -m urban_mobility.audited_models --data-root /path/to/private_data --archived-final /path/to/prior_strict_final --output /path/to/NEW_audit
 Rscript scripts/01_preprocess_flow.R /path/to/raw_csv /path/to/districts.shp /path/to/NEW_mobility.parquet
 ```
 
@@ -54,8 +54,8 @@ modules are preserved implementation evidence, not a supported extraction CLI.
 PyTorch and Transformers are therefore not dependencies of the supported CPU
 evaluation workflow; a future extraction environment needs separate validation.
 
-After `pip install .`, `paper1` and `python -m paper1` are also entry points.
-The source launcher is named `run_paper1.py` to avoid shadowing the package.
+After `pip install .`, `urban_mobility` and `python -m urban_mobility` are also entry points.
+The source launcher is named `run_urban_mobility.py` to avoid shadowing the package.
 The frozen requirements must be installed in a fresh environment before release;
 historical runtime provenance is distinct from a newly validated environment.
 
