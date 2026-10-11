@@ -1,6 +1,12 @@
 # Urban mobility: reproducible analysis code
 
-This is the active code tree. Historical scripts are retained separately, not used as competing entry points. No data, model weights, embeddings, manuscripts, or credentials are included here.
+This public repository contains the analysis code accompanying the journal manuscript on frozen language-model representations for interdistrict mobility prediction in Seoul. It covers district-name and coordinate input conditions, non-LLM comparators, and reciprocal-dyad five-fold out-of-fold evaluation. No data, model weights, embeddings, manuscripts, or credentials are included here.
+
+## Related master's-thesis repository
+
+The earlier master's-thesis research is preserved in [llm-human-mobility](https://github.com/geowhk/llm-human-mobility). It includes output-level evaluation, internal-representation diagnostics, multiple spatial scales, and principle-prompt comparisons.
+
+Use this repository for the subsequent journal-article analysis. Its preprocessing, evaluation design, and comparator set differ from the thesis workflow; the two repositories' results should not be treated as outputs from the same experiment.
 
 ## Read in paper order
 
@@ -40,15 +46,15 @@ Rscript scripts/01_preprocess_flow.R /path/to/raw_csv /path/to/districts.shp /pa
 
 R preprocessing requires `arrow`, `sf`, and `tidyverse`. R package versions were not pinned by this cleanup. Full preprocessing/model training was not rerun during reorganization. See [reproducibility levels](docs/REPRODUCIBILITY.md) before interpreting these commands.
 
-## Publication readiness
+## License and data access
 
-The author's original code and accompanying documentation are licensed under the [MIT License](LICENSE). This grant does not cover third-party software, source datasets, model weights, embeddings, or fonts. Raw data are not redistributed: follow the [download and preprocessing guide](docs/DATA_DOWNLOAD.md). No GitHub publication has been performed as part of local release preparation. Do not publish the surrounding private workspace or accepted input bundle automatically.
+The author's original code and accompanying documentation are licensed under the [MIT License](LICENSE). This grant does not cover third-party software, source datasets, model weights, embeddings, or fonts. Raw data are not redistributed: follow the [download and preprocessing guide](docs/DATA_DOWNLOAD.md). The private workspace and reference input/prediction bundle are not included in this public repository.
 
 ## Release scope
 
 The source tree supports synthetic tests without research data. Reproducing paper
 results additionally requires the accepted input/prediction bundle; that bundle is
-not distributed in this code-only candidate. See [input contract](docs/INPUTS.md).
+not distributed in this code-only repository. See [input contract](docs/INPUTS.md).
 This is not an end-to-end, raw-data-to-LLM reproduction claim. Representation
 modules are preserved implementation evidence, not a supported extraction CLI.
 PyTorch and Transformers are therefore not dependencies of the supported CPU
@@ -56,10 +62,10 @@ evaluation workflow; a future extraction environment needs separate validation.
 
 After `pip install .`, `urban_mobility` and `python -m urban_mobility` are also entry points.
 The source launcher is named `run_urban_mobility.py` to avoid shadowing the package.
-The frozen requirements must be installed in a fresh environment before release;
-historical runtime provenance is distinct from a newly validated environment.
+Use a fresh environment when installing the pinned requirements. Historical runtime
+provenance and the environment tested during release preparation are documented
+separately in [reproducibility levels](docs/REPRODUCIBILITY.md).
 
 No manuscript, private audit logs, model weights, prompts, mobility data, or OOF
-predictions are included in the code-only archive. Do not treat omitted data as
-synthetic. Redistribution of derived artifacts remains separate from the MIT
+predictions are included in the code-only repository. The omitted research inputs are not synthetic data. Redistribution of derived artifacts remains separate from the MIT
 code license; see [release checklist](docs/RELEASE_CHECKLIST.md).
