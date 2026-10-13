@@ -3,7 +3,7 @@
 ## October 2026 release preparation
 
 The launcher was renamed to `run_urban_mobility.py` to remove package shadowing. Figure 2
-now labels arrival hour as t, matching the TGIS manuscript. No fitting or metric
+now labels arrival hour as t, matching the manuscript notation. No fitting or metric
 arithmetic was changed. The R geometry comment explicitly distinguishes current
 distance geometry from historical prompt coordinates.
 
