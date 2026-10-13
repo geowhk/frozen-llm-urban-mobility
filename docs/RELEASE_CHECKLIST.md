@@ -4,7 +4,7 @@
 
 - Original analysis code and accompanying documentation under the MIT License, approved by the author on October 6, 2026.
 - Source-data retrieval instructions in [DATA_DOWNLOAD.md](DATA_DOWNLOAD.md); raw data are excluded.
-- The submitted manuscript identifies [this repository](https://github.com/geowhk/frozen-llm-urban-mobility) as its analysis-code source.
+- The manuscript identifies [this repository](https://github.com/geowhk/frozen-llm-urban-mobility) as its analysis-code source.
 
 ## Documented checks during release preparation
 
