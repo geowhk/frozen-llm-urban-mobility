@@ -5,7 +5,7 @@ Analysis code for **Evaluating frozen language-model representations for urban m
 **Woohyung Kim** — Department of Geography Education, Seoul National University  
 [ORCID](https://orcid.org/0009-0002-6347-6447)
 
-**Manuscript status:** submitted to *Transactions in GIS* on October 7, 2026. This is a submitted manuscript, not an accepted or published article.
+**Manuscript status:** unpublished manuscript under revision. It has not been accepted for publication.
 
 ## Research questions
 
@@ -19,7 +19,7 @@ Five-fold out-of-fold evaluation holds out both directions and all hours of each
 
 ## Main findings
 
-The submitted manuscript reports that:
+The analysis documented in this repository reports that:
 
 - The coordinate-based readout outperformed the name-based readout and the polynomial benchmark using coordinates and time directly, while gravity achieved the lowest overall errors.
 - The name-based readout's higher district-total rank correlations than the polynomial benchmark did not extend to better allocation.
