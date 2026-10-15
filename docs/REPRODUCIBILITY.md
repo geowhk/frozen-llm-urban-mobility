@@ -1,5 +1,14 @@
 # Reproducibility contract
 
+## Incremental-value extension
+
+The gravity-augmentation and follow-up diagnostic workflow is documented in
+[INCREMENTAL_ANALYSIS.md](INCREMENTAL_ANALYSIS.md). Its separate historical
+environment, inputs, and verification limits are specified there. The training
+conventions below describe the original readouts; the extension instead uses an
+unpenalized gravity block and a penalized added-feature block. Original model
+implementations and results were not changed by the extension's code release.
+
 ## October 2026 release preparation
 
 The launcher was renamed to `run_urban_mobility.py` to remove package shadowing. Figure 2

@@ -17,13 +17,25 @@ The study uses average weekday hourly mobility estimates for November 2024 among
 
 Five-fold out-of-fold evaluation holds out both directions and all hours of each selected district pair. The districts themselves remain represented in training. Comparators include coordinate–time polynomial ridge and temporal, categorical, and spatial-interaction benchmarks.
 
+An additional analysis evaluates incremental value by adding each representation
+to an unpenalized gravity design, with a gravity-plus-polynomial comparator.
+Fixed-prediction diagnostics examine where improvements and losses concentrate.
+See [the incremental-analysis workflow](docs/INCREMENTAL_ANALYSIS.md).
+
 ## Main findings
 
-The analysis documented in this repository reports that:
+The original standalone-readout analysis reports that:
 
 - The coordinate-based readout outperformed the name-based readout and the polynomial benchmark using coordinates and time directly, while gravity achieved the lowest overall errors.
 - The name-based readout's higher district-total rank correlations than the polynomial benchmark did not extend to better allocation.
 - Predictive usefulness depended on location encoding and the aspect of mobility being evaluated. These findings concern held-out relationships among known districts in this study, not demonstrated transfer to new cities or unseen districts.
+
+In the added gravity-augmentation analysis, both LLM conditions reduced pooled
+MAE relative to gravity alone, but neither beat gravity plus polynomial features
+on pooled MAE. Both had higher RMSE than these comparators. Relative-error and
+allocation results differed from this overall ranking; the extension does not
+establish uniform superiority of LLM features. Follow-up diagnostics are post hoc
+descriptions of the fixed predictions, not new out-of-sample experiments.
 
 ## Research work represented here
 
@@ -47,7 +59,10 @@ Use this repository for the subsequent journal-article analysis. Its preprocessi
 | 4. Audited original models | `src/urban_mobility/audited_models.py`, `core.py` | Final numerical-audit solver and six original conditions |
 | 5. Direct-input comparator | `src/urban_mobility/polynomial.py` | Coordinate–time degree-2 ridge; six inputs, 27 expanded features |
 | 6. Fixed-prediction evaluation | `src/urban_mobility/evaluation.py`, `diagnostics.py` | Overall, fold, flow, distance and district summaries |
-| 7. Publication outputs | `src/urban_mobility/figures.py` | Tables and Figures 2–4/S1–S3 |
+| 7. Original publication outputs | `src/urban_mobility/figures.py` | Original tables and figure layouts; numbering belongs to that version |
+| 8. Incremental-value fitting | `scripts/fit_incremental.py` | Gravity alone and gravity plus name, coordinate, or polynomial features |
+| 9. Incremental evaluation | `scripts/evaluate_incremental.py` | Saved-OOF comparisons and district allocation |
+| 10. Follow-up diagnostics | `scripts/diagnose_incremental.py`, `scripts/verify_incremental_diagnostics.py` | Error concentration, group/fold differences, overlap, and independent verification |
 | Checks | `validation.py`, `tests/` | Stored hashes, fixed predictions, numeric equivalence and synthetic contracts |
 
 ## Start here: tests without research data
