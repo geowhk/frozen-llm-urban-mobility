@@ -12,6 +12,13 @@ MODELS=['G_BASE','G_NAME','G_COORD','G_POLY2']
 PAIRS=[('G_NAME','G_BASE'),('G_COORD','G_BASE'),('G_NAME','G_POLY2'),('G_COORD','G_POLY2')]
 METRICS=['mae','rmse','smape','cpc','log_mse','total_bias_pct']
 TOL=1e-8  # absolute tolerance for zero improvement, in each reported metric's units
+def bias_comparison(candidate, comparator):
+    """Percentage-point differences; only absolute-bias improvement measures benefit."""
+    signed = comparator - candidate
+    return dict(signed_bias_difference_pp=signed,
+                absolute_bias_improvement_pp=abs(comparator)-abs(candidate),
+                improvement_total_bias_pct=signed)  # Deprecated compatibility alias.
+
 def sha(p): return hashlib.sha256(p.read_bytes()).hexdigest()
 def read(p): return pd.read_csv(p,dtype={'origin_code':str,'destination_code':str,'obs_id':str,'unordered_pair_id':str})
 def metric(d):
@@ -148,6 +155,7 @@ def main():
                     for k in METRICS:
                         row['improvement_'+k]=(am[k]-bm[k]) if k=='cpc' else bm[k]-am[k]
                         if k in ['mae','rmse','smape','log_mse']: row['improvement_'+k+'_pct']=100*frac(bm[k]-am[k],bm[k])
+                    row.update(bias_comparison(am['total_bias_pct'], bm['total_bias_pct']))
                     gc.append(row)
                     contribution.append(dict(candidate=cand,comparator=ref,scope=scope,group_type=kind,group_id=group,n_obs=len(p),denominator_N=nn,C_AE=p.improvement_AE.sum()/nn,C_SE=p.improvement_SE.sum()/nn,group_mean_AE_improvement=p.improvement_AE.mean(),group_mean_SE_improvement=p.improvement_SE.mean()))
     gm=pd.DataFrame(gm); gc=pd.DataFrame(gc); contribution=pd.DataFrame(contribution)

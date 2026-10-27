@@ -104,8 +104,23 @@ error metrics, larger for CPC. Read signed bias relative to zero.
 Follow-up diagnostics produce observation/dyad errors, gain/loss concentration,
 influential-pair summaries, common-pair exclusion sensitivity, group/fold
 comparisons, contributions, flow-by-distance overlap, and two review figures
-(PNG/PDF). Here positive `improvement` means comparator error minus candidate
-error. MAE and MSE contributions are additive; MSE contributions are not RMSE
+(PNG/PDF). For error metrics, positive `improvement` means comparator error minus
+candidate error; CPC improvement is candidate minus comparator. Bias columns in
+`group_fold_comparisons.csv` have explicit meanings:
+
+- `signed_bias_difference_pp`: comparator signed bias minus candidate signed
+  bias. Its sign describes a shift, not whether the candidate is closer to zero.
+- `absolute_bias_improvement_pp`: absolute comparator bias minus absolute
+  candidate bias. Positive means closer to zero, negative means farther from
+  zero, and zero means equal absolute bias, including opposite signs.
+- `improvement_total_bias_pct`: deprecated compatibility alias of
+  `signed_bias_difference_pp`. Historical values are preserved; do not use its
+  sign as an improvement decision.
+
+Both new columns are percentage-point differences of percentage biases, not
+relative percentage reductions. Undefined bias remains NaN. These columns do
+not change the MAE/RMSE/sMAPE fold-consistency counts or the evaluation script's
+absolute-bias criterion. MAE and MSE contributions are additive; MSE contributions are not RMSE
 contributions. Loss concentration uses the explicitly reported loss denominator,
 not total error. The exclusion diagnostic is post hoc and does not replace full
 sample performance or justify deleting observations. Counts of improving folds
@@ -113,7 +128,9 @@ are descriptive, not significance tests.
 
 `verify_incremental_diagnostics.py` independently recomputes diagnostic quantities.
 Optional `--replicate-dir /path/to/prior_diagnostics` additionally compares saved
-CSV outputs (rtol=1e-10, atol=1e-7). Its report does not claim visual figure review.
+CSV outputs (rtol=1e-10, atol=1e-7). For legacy outputs without the two explicit
+bias columns, every historical column is compared; the new columns are checked
+independently against fixed predictions. Its report does not claim visual figure review.
 These scripts generate diagnostic figures, not the final manuscript's edited
 figure layout or numbering. Dataset-specific prose reports are not generated.
 

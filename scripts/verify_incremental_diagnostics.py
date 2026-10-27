@@ -71,6 +71,14 @@ gm=read('results/group_fold_metrics.csv').set_index(['model_id','scope','group_t
 for r in gc.itertuples():
     ca=gm.loc[(r.candidate,r.scope,r.group_type,r.group_id)]; re=gm.loc[(r.comparator,r.scope,r.group_type,r.group_id)]
     close([getattr(r,'improvement_'+k) for k in keys],[(ca[k]-re[k]) if k=='cpc' else (re[k]-ca[k]) for k in keys],'group comparison signs')
+    # Recompute bias from fixed predictions, not the production comparison helper.
+    part=d[d[r.group_type].eq(r.group_id)]
+    if r.scope!='pooled': part=part[part.outer_fold.eq(int(r.scope))]
+    candidate_bias=scores(part[part.model_id.eq(r.candidate)])[-1]
+    comparator_bias=scores(part[part.model_id.eq(r.comparator)])[-1]
+    close(r.signed_bias_difference_pp, comparator_bias-candidate_bias, 'signed bias difference')
+    close(r.absolute_bias_improvement_pp, abs(comparator_bias)-abs(candidate_bias), 'absolute bias improvement')
+    close(r.improvement_total_bias_pct, r.signed_bias_difference_pp, 'deprecated bias alias')
 assert (gm.n_obs>0).all() and (cells.n_obs>0).all()
 for r in read('results/loss_concentration.csv').itertuples():
     x=dc[dc.candidate.eq(r.candidate)&dc.comparator.eq(r.comparator)]; net=x['net_'+r.metric+'_improvement']; loss=(-net[net < -1e-8]).sort_values(ascending=False)
@@ -101,6 +109,12 @@ if a.replicate_dir:
     for folder in ['results','figures']:
         for file in sorted((root/folder).glob('*.csv*')):
             x=pd.read_csv(file,low_memory=False); y=pd.read_csv(a.replicate_dir/folder/file.name,low_memory=False)
+            # Legacy results lack the two explicit bias columns; compare every old column.
+            if file.name=='group_fold_comparisons.csv':
+                added=['signed_bias_difference_pp','absolute_bias_improvement_pp']
+                assert all(k in x for k in added)
+                missing=[k for k in added if k not in y]
+                x=x.drop(columns=missing)
             assert list(x.columns)==list(y.columns)
             # Deterministic output keys/order; sort all nonnumeric keys for comparison.
             sort=list(x.select_dtypes(exclude='number').columns)
